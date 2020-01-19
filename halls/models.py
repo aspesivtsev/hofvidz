@@ -3,6 +3,10 @@ from django.db import models
 class Hall(models.Model):
     title = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.title
+
+    
 class Video(models.Model):
     title = models.CharField(max_length=255)
     url = models.URLField()
