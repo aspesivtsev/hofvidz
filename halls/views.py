@@ -9,6 +9,9 @@ from .models import Hall
 def home(request):
     return render(request, 'halls/home.html')
 
+def dashboard(request):
+    return render(request, 'halls/dashboard.html')
+
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('home')
@@ -32,3 +35,18 @@ class CreateHall(generic.CreateView):
         form.instance.user = self.request.user
         super(CreateHall, self).form_valid(form)
         return redirect('home')
+
+class DetailHall(generic.DetailView):
+    model = Hall
+    template_name = 'halls/detail_hall.html'
+
+class UpdateHall(generic.UpdateView):
+    model = Hall
+    template_name = 'halls/update_hall.html'
+    fields = ['title']
+    success_url = reverse_lazy('dashboard')
+
+class DeleteHall(generic.DeleteView):
+    model = Hall
+    template_name = 'halls/delete_hall.html'
+    success_url = reverse_lazy('dashboard')
