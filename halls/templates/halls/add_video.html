@@ -1,0 +1,42 @@
+{% extends 'halls/base.html' %}
+
+{% block content %}
+<div class="container" xmlns="http://www.w3.org/1999/html">
+    <h2>Add Video</h2>
+    <form method="post">
+    {% csrf_token %}
+    {% load widget_tweaks %}
+
+    {% for field in form %}
+    <div class="form-group {% if field.errors %} alert alert-danger{% endif %}">
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {% render_field field class="form-control" %}
+    </div>
+    {% endfor %}
+        <button type="submit" value="Create Hall" class="btn btn-primary">Create</button>
+    </form>
+<br />
+<h2>OR</h2>
+
+    <form>
+        {{ search_form.as_p }}
+    </form>
+
+</div>
+{% endblock %}
+
+<!--Output the form as a table lined up (goes after csrf_token)-->
+<!--<table>-->
+<!--    {{ form.as_table }}-->
+<!--</table>-->
+
+<!--Output the form as usual p paragraphed form (goes after csrf_token)-->
+<!--{{ form.as_p }}-->
+
+<!--This for looping thru the field of the form - most customizable mode-->
+<!--{% for field in form %}-->
+<!--        {{ field.errors }}-->
+<!--        {{ field.label_tag }}-->
+<!--        {{ field }}-->
+<!--    {% endfor %}-->

@@ -15,5 +15,7 @@ class Video(models.Model):
     youtube_id = models.CharField(max_length=255)
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.title
 
 
