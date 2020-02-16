@@ -50,7 +50,7 @@ def add_video(request, pk):
     return render(request, 'halls/add_video.html', {'form':form, 'search_form':search_form, 'hall':hall})
 
 def video_search(request):
-    return JsonResponse()
+    return JsonResponse({'Hello':'yep this worked!'})
 
 class SignUp(generic.CreateView):
     form_class = UserCreationForm

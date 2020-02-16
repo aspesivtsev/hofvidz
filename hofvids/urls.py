@@ -35,6 +35,6 @@ urlpatterns = [
     path('hof/<int:pk>/delete/', views.DeleteHall.as_view(), name='delete_hall'),
     #Video
     path('hof/<int:pk>/addvideo/', views.add_video, name='add_video'),
-    path('video/search', views.video_search, name='video_search'),
+    path('video/search/', views.video_search, name='video_search'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
