@@ -11,8 +11,8 @@ import urllib
 import requests
 
 
-youtube_api_key = 'AIzaSyCX2ZG87-xjfdtB0FSv9sGEm8iBHI0NfQE'
-
+old_youtube_api_key = 'AIzaSyCX2ZG87-xjfdtB0FSv9sGEm8iBHI0NfQE'
+new_youtube_api_key = 'AIzaSyBDAWdy6BBYE0WIi30WD-1JIB7Hlef9aBY'
 
 def home(request):
     return render(request, 'halls/home.html')
@@ -44,13 +44,18 @@ def add_video(request, pk):
                 video.save()
                 return redirect('detail_hall', pk)
             else:
-                errors = form._errors.setdefault('url', ErrorList())
+                errors = form.errors.setdefault('url', ErrorList())
                 errors.append('Needs to be an YouTube URL')
 
     return render(request, 'halls/add_video.html', {'form':form, 'search_form':search_form, 'hall':hall})
 
 def video_search(request):
-    return JsonResponse({'Hello':'yep this worked!'})
+    search_form = SearchForm(request.GET)
+    if search_form.is_valid():
+        encoded_search_term = urllib.parse.quote(search_form.cleaned_data['search_term'])
+        response = requests.get(f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q={ encoded_search_term }&key={ youtube_api_key }')
+        return JsonResponse(response.json())
+    return JsonResponse({'error':'Unable to validate form!'})
 
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
@@ -86,7 +91,14 @@ class UpdateHall(generic.UpdateView):
     fields = ['title']
     success_url = reverse_lazy('dashboard')
 
+
 class DeleteHall(generic.DeleteView):
     model = Hall
     template_name = 'halls/delete_hall.html'
+    success_url = reverse_lazy('dashboard')
+
+
+class DeleteVideo(generic.DeleteView):
+    model = Video
+    template_name = 'halls/delete_video.html'
     success_url = reverse_lazy('dashboard')
