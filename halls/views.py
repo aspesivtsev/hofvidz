@@ -11,14 +11,12 @@ import urllib
 import requests
 
 
-old_youtube_api_key = 'AIzaSyCX2ZG87-xjfdtB0FSv9sGEm8iBHI0NfQE'
-new_youtube_api_key = 'AIzaSyBDAWdy6BBYE0WIi30WD-1JIB7Hlef9aBY'
-
 def home(request):
     return render(request, 'halls/home.html')
 
 def dashboard(request):
-    return render(request, 'halls/dashboard.html')
+    halls = Hall.objects.filter(user=request.user)
+    return render(request, 'halls/dashboard.html', {'halls':halls})
 
 def add_video(request, pk):
     form = VideoForm()
