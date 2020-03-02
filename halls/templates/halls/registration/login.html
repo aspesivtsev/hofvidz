@@ -5,7 +5,18 @@
     <h2>Login</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <!-- instead of all widget tweaks we could use simply {{ form.as_p }}-->
+        {% if form.non_field_errors %}<div class="bg-secondary text-white">{{ form.non_field_errors }}</div>{% endif %}
+        {% load widget_tweaks %}
+        {% for field in form %}
+        <div class="form-group {% if field.errors %} alert alert-danger{% endif %}">
+            {{ field.errors }}
+            {{ field.label_tag }}
+            {% render_field field class="form-control" %}
+            {% if field.help_text %}<small class="bg-secondary text-white">{{ field.help_text }}</small>{% endif %}
+        </div>
+        {% endfor   %}
+
         <button type="submit" class="btn btn-primary">Login!</button>
     </form>
 </div>
